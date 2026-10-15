@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FixFlow – Manager/Admin</title><link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <a class="brand" href="index.html"><span class="brand-mark">F</span><span>FixFlow<small>MAINTENANCE HUB</small></span></a>
+    <div class="side-label">MANAGER</div>
+    <a class="nav-link active" href="index.html">▦ Dashboard</a>
+    <a class="nav-link" href="pages/dispatch-board.html">⇄ Dispatch Board</a>
+    <a class="nav-link" href="pages/sla-monitor.html">◷ SLA Monitor</a>
+    <a class="nav-link" href="pages/failure-insights.html">⌁ Failure Insights</a>
+    <div class="side-label">ADMIN</div>
+    <a class="nav-link" href="pages/user-management.html">♙ User Management</a>
+    <a class="nav-link" href="pages/asset-management.html">▣ Asset Management</a>
+    <a class="nav-link" href="pages/issue-category.html">☷ Issue Category</a>
+    <div class="sidebar-bottom"><span class="avatar">H</span><span><b>Manager/Admin</b><small>Demo workspace</small></span></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><button class="menu-toggle" data-menu>☰</button><span class="breadcrumb">Workspace / <b>Dashboard</b></span><span class="top-actions">🔔 <span class="avatar">H</span></span></header>
+    <section class="page-head"><div><p class="eyebrow">TỔNG QUAN VẬN HÀNH</p><h1>Dashboard Manager</h1><p class="muted">Theo dõi yêu cầu bảo trì và hiệu suất xử lý trong một nơi.</p></div><span class="date-chip" id="today"></span></section>
+    <section class="stats-grid" id="dashboard-stats"></section>
+    <section class="content-grid">
+      <article class="panel wide"><div class="panel-head"><div><h2>Yêu cầu gần đây</h2><p class="muted">Danh sách ticket đang được theo dõi</p></div><a class="text-link" href="pages/dispatch-board.html">Mở Dispatch Board →</a></div>
+      <div class="table-wrap"><table><thead><tr><th>Mã ticket</th><th>Thiết bị</th><th>Mức độ</th><th>Kỹ thuật viên</th><th>Trạng thái</th></tr></thead><tbody id="recent-tickets"></tbody></table></div></article>
+      <article class="panel"><div class="panel-head"><div><h2>Tình trạng SLA</h2><p class="muted">Từ dữ liệu ticket demo</p></div></div><div id="sla-summary" class="summary-list"></div><a class="button button-light full" href="pages/sla-monitor.html">Xem SLA Monitor</a></article>
+    </section>
+    <footer>FixFlow · Frontend prototype · Dữ liệu minh họa</footer>
+  </main>
+</div><script src="js/app.js"></script></body></html>
