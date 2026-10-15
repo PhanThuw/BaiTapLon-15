@@ -1,0 +1,312 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FixFlow - Tạo yêu cầu bảo trì</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="home-page" data-page="create-ticket">
+
+<div class="app-layout">
+
+    <!-- MENU BEN TRAI -->
+    <aside class="sidebar">
+        <a href="index.html" class="sidebar-brand">
+            <div class="sidebar-logo">🔧</div>
+            <div>
+                <strong>Fix<span>Flow</span></strong>
+                <small>HỆ THỐNG BẢO TRÌ</small>
+            </div>
+        </a>
+
+        <p class="menu-heading">TỔNG QUAN</p>
+        <a href="index.html" class="nav-link">
+            <span class="nav-icon">⌂</span> Trang chủ
+        </a>
+
+        <p class="menu-heading">NGHIỆP VỤ</p>
+        <a href="create-ticket.html" class="nav-link active">
+            <span class="nav-icon">＋</span> Tạo yêu cầu
+        </a>
+        <a href="request-list.html" class="nav-link">
+            <span class="nav-icon">▤</span> Yêu cầu của tôi
+        </a>
+        <a href="technician.html" class="nav-link">
+            <span class="nav-icon">⚒</span> Công việc kỹ thuật
+        </a>
+        <a href="dispatch.html" class="nav-link">
+            <span class="nav-icon">⇄</span> Điều phối công việc
+        </a>
+        <a href="sla.html" class="nav-link">
+            <span class="nav-icon">◷</span> Theo dõi SLA
+        </a>
+
+        <p class="menu-heading">QUẢN LÝ HỆ THỐNG</p>
+        <a href="assets.html" class="nav-link">
+            <span class="nav-icon">▣</span> Quản lý thiết bị
+        </a>
+        <a href="categories.html" class="nav-link">
+            <span class="nav-icon">▦</span> Danh mục sự cố
+        </a>
+        <a href="users.html" class="nav-link">
+            <span class="nav-icon">♙</span> Quản lý người dùng
+        </a>
+        <a href="reports.html" class="nav-link">
+            <span class="nav-icon">▥</span> Báo cáo thống kê
+        </a>
+        <a href="profile.html" class="nav-link">
+            <span class="nav-icon">◎</span> Hồ sơ cá nhân
+        </a>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-account">
+                <div class="avatar" id="sidebarAvatar">U</div>
+                <div class="account-info">
+                    <strong id="sidebarName">Người dùng</strong>
+                    <small id="sidebarEmail">user@email.com</small>
+                </div>
+            </div>
+            <button type="button" class="logout-button" id="openLogout">
+                <span class="nav-icon">⇥</span> Đăng xuất
+            </button>
+        </div>
+    </aside>
+
+    <!-- NOI DUNG CHINH -->
+    <main class="main-area">
+        <header class="topbar">
+            <div>
+                <p class="breadcrumb">FixFlow / Nghiệp vụ / Tạo yêu cầu</p>
+                <h2>Tạo yêu cầu bảo trì</h2>
+            </div>
+
+            <div class="topbar-account">
+                <div class="avatar" id="topAvatar">U</div>
+                <div>
+                    <strong id="topName">Người dùng</strong>
+                    <small id="topEmail">user@email.com</small>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-content ticket-page">
+
+            <section class="ticket-intro">
+                <div class="ticket-intro-icon">🛠️</div>
+                <div>
+                    <h1>Tạo yêu cầu bảo trì mới</h1>
+                    <p>
+                        Cung cấp thông tin về thiết bị và sự cố để bộ phận kỹ thuật
+                        tiếp nhận và xử lý.
+                    </p>
+                </div>
+            </section>
+
+            <div class="ticket-layout">
+
+                <!-- FORM TAO YEU CAU -->
+                <section class="ticket-form-card">
+                    <div class="ticket-card-heading">
+                        <h2>Thông tin sự cố</h2>
+                        <p>Các trường có dấu <span class="required">*</span> là bắt buộc.</p>
+                    </div>
+
+                    <form id="ticketForm">
+
+                        <div class="form-group">
+                            <label for="title">
+                                Tiêu đề sự cố <span class="required">*</span>
+                            </label>
+                            <input
+                                type="text"
+                                id="title"
+                                name="title"
+                                placeholder="Ví dụ: Máy tính phòng học không khởi động"
+                                maxlength="120"
+                                required
+                            >
+                            <small class="field-hint">Tóm tắt ngắn gọn vấn đề đang gặp phải.</small>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="asset">
+                                    Thiết bị <span class="required">*</span>
+                                </label>
+                                <select id="asset" name="asset" required>
+                                    <option value="">-- Chọn thiết bị --</option>
+                                    <option value="Máy tính">Máy tính</option>
+                                    <option value="Máy in">Máy in</option>
+                                    <option value="Máy chiếu">Máy chiếu</option>
+                                    <option value="Điều hòa">Điều hòa</option>
+                                    <option value="Mạng Internet">Mạng Internet</option>
+                                    <option value="Thiết bị điện">Thiết bị điện</option>
+                                    <option value="Thiết bị khác">Thiết bị khác</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="category">
+                                    Danh mục sự cố <span class="required">*</span>
+                                </label>
+                                <select id="category" name="category" required>
+                                    <option value="">-- Chọn danh mục --</option>
+                                    <option value="Hỏng hóc thiết bị">Hỏng hóc thiết bị</option>
+                                    <option value="Lỗi phần mềm">Lỗi phần mềm</option>
+                                    <option value="Lỗi mạng">Lỗi mạng</option>
+                                    <option value="Lỗi điện">Lỗi điện</option>
+                                    <option value="Bảo trì định kỳ">Bảo trì định kỳ</option>
+                                    <option value="Khác">Khác</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="priority">
+                                    Mức độ ưu tiên <span class="required">*</span>
+                                </label>
+                                <select id="priority" name="priority" required>
+                                    <option value="Thấp">Thấp</option>
+                                    <option value="Trung bình" selected>Trung bình</option>
+                                    <option value="Cao">Cao</option>
+                                    <option value="Khẩn cấp">Khẩn cấp</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="location">
+                                    Vị trí thiết bị <span class="required">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    id="location"
+                                    name="location"
+                                    placeholder="Ví dụ: Phòng A203"
+                                    maxlength="150"
+                                    required
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">
+                                Mô tả chi tiết sự cố <span class="required">*</span>
+                            </label>
+                            <textarea
+                                id="description"
+                                name="description"
+                                rows="5"
+                                maxlength="2000"
+                                placeholder="Mô tả biểu hiện của sự cố, thời điểm phát hiện và những thông tin liên quan..."
+                                required
+                            ></textarea>
+                            <div class="description-footer">
+                                <small class="field-hint">Mô tả càng rõ, kỹ thuật viên càng dễ xác định vấn đề.</small>
+                                <small id="descriptionCount">0/2000</small>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="image">Ảnh minh họa (không bắt buộc)</label>
+                            <input
+                                type="file"
+                                id="image"
+                                name="image"
+                                accept="image/png,image/jpeg,image/webp"
+                            >
+                            <small class="field-hint">
+                                Chọn ảnh PNG, JPG hoặc WEBP, tối đa 2 MB.
+                            </small>
+                            <div id="imagePreview" class="image-preview" hidden>
+                                <img id="previewPicture" alt="Ảnh minh họa sự cố">
+                                <button type="button" id="removeImage" class="remove-image">
+                                    Xóa ảnh
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-error" id="formError" role="alert" hidden></div>
+
+                        <div class="form-actions">
+                            <button type="reset" class="btn-secondary">
+                                Xóa nội dung
+                            </button>
+                            <button type="submit" class="btn-submit" id="submitTicket">
+                                ＋ Tạo yêu cầu
+                            </button>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- HUONG DAN -->
+                <aside class="ticket-help">
+                    <div class="help-card">
+                        <div class="help-icon">💡</div>
+                        <h3>Lưu ý khi tạo yêu cầu</h3>
+                        <ul>
+                            <li>Chọn đúng thiết bị đang gặp sự cố.</li>
+                            <li>Mô tả rõ hiện tượng và thời điểm phát hiện.</li>
+                            <li>Ghi chính xác vị trí để kỹ thuật viên tìm thiết bị.</li>
+                            <li>Chọn mức độ ưu tiên phù hợp với ảnh hưởng thực tế.</li>
+                            <li>Có thể đính kèm ảnh để minh họa vấn đề.</li>
+                        </ul>
+                    </div>
+
+                    <div class="help-card help-blue">
+                        <div class="help-icon">📋</div>
+                        <h3>Quy trình xử lý</h3>
+                        <div class="process-step">
+                            <span>1</span>
+                            <div>
+                                <strong>Gửi yêu cầu</strong>
+                                <p>Hệ thống ghi nhận thông tin sự cố.</p>
+                            </div>
+                        </div>
+                        <div class="process-step">
+                            <span>2</span>
+                            <div>
+                                <strong>Tiếp nhận</strong>
+                                <p>Yêu cầu được xem xét và phân công.</p>
+                            </div>
+                        </div>
+                        <div class="process-step">
+                            <span>3</span>
+                            <div>
+                                <strong>Xử lý sự cố</strong>
+                                <p>Kỹ thuật viên kiểm tra và sửa chữa.</p>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+
+            <footer class="page-footer">
+                © 2026 FixFlow · Hệ thống điều phối yêu cầu bảo trì thiết bị
+            </footer>
+        </div>
+    </main>
+</div>
+
+<!-- HOP XAC NHAN DANG XUAT -->
+<div class="modal-overlay" id="logoutModal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true"
+        aria-labelledby="logoutTitle">
+        <button type="button" class="modal-close" id="closeLogout"
+            aria-label="Đóng">×</button>
+        <div class="logout-symbol">⇥</div>
+        <h2 id="logoutTitle">Xác nhận đăng xuất</h2>
+        <p>Bạn có chắc chắn muốn đăng xuất khỏi hệ thống FixFlow không?</p>
+        <div class="modal-actions">
+            <button type="button" class="btn-secondary" id="cancelLogout">Hủy</button>
+            <button type="button" class="btn-danger" id="confirmLogout">Đăng xuất</button>
+        </div>
+    </div>
+</div>
+
+<script src="create-ticket.js"></script>
+</body>
+</html>
