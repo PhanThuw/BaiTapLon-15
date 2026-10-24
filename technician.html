@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FixFlow - Công việc kỹ thuật</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="home-page" data-page="technician">
+
+<div class="app-layout">
+
+    <!-- MENU BEN TRAI -->
+    <aside class="sidebar">
+        <a href="index.html" class="sidebar-brand">
+            <div class="sidebar-logo">🔧</div>
+            <div>
+                <strong>Fix<span>Flow</span></strong>
+                <small>HỆ THỐNG BẢO TRÌ</small>
+            </div>
+        </a>
+
+        <p class="menu-heading">TỔNG QUAN</p>
+        <a href="index.html" class="nav-link">
+            <span class="nav-icon">⌂</span> Trang chủ
+        </a>
+
+        <p class="menu-heading">NGHIỆP VỤ</p>
+        <a href="create-ticket.html" class="nav-link">
+            <span class="nav-icon">＋</span> Tạo yêu cầu
+        </a>
+        <a href="request-list.html" class="nav-link">
+            <span class="nav-icon">▤</span> Yêu cầu của tôi
+        </a>
+        <a href="technician.html" class="nav-link active">
+            <span class="nav-icon">⚒</span> Công việc kỹ thuật
+        </a>
+        <a href="dispatch.html" class="nav-link">
+            <span class="nav-icon">⇄</span> Điều phối công việc
+        </a>
+        <a href="sla.html" class="nav-link">
+            <span class="nav-icon">◷</span> Theo dõi SLA
+        </a>
+
+        <p class="menu-heading">QUẢN LÝ HỆ THỐNG</p>
+        <a href="assets.html" class="nav-link">
+            <span class="nav-icon">▣</span> Quản lý thiết bị
+        </a>
+        <a href="categories.html" class="nav-link">
+            <span class="nav-icon">▦</span> Danh mục sự cố
+        </a>
+        <a href="users.html" class="nav-link">
+            <span class="nav-icon">♙</span> Quản lý người dùng
+        </a>
+        <a href="reports.html" class="nav-link">
+            <span class="nav-icon">▥</span> Báo cáo thống kê
+        </a>
+        <a href="profile.html" class="nav-link">
+            <span class="nav-icon">◎</span> Hồ sơ cá nhân
+        </a>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-account">
+                <div class="avatar" id="sidebarAvatar">T</div>
+                <div class="account-info">
+                    <strong id="sidebarName">Kỹ thuật viên</strong>
+                    <small id="sidebarEmail">tech@email.com</small>
+                </div>
+            </div>
+            <button type="button" class="logout-button" id="openLogout">
+                <span class="nav-icon">⇥</span> Đăng xuất
+            </button>
+        </div>
+    </aside>
+
+    <!-- NOI DUNG CHINH -->
+    <main class="main-area">
+
+        <header class="topbar">
+            <div>
+                <p class="breadcrumb">FixFlow / Nghiệp vụ / Công việc kỹ thuật</p>
+                2>Hàng chờ & Xử lý sự cố</h2>
+            </div>
+
+            <div class="topbar-account">
+                <div class="avatar" id="topAvatar">T</div>
+                <div>
+                    <strong id="topName">Kỹ thuật viên</strong>
+                    <small id="topEmail">tech@email.com</small>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-content">
+
+            <!-- CAC SO LIEU CUA KY THUAT VIEN -->
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon orange-bg">◷</span>
+                        <span class="stat-label">Cần xử lý</span>
+                    </div>
+                    <h3 id="techPendingCount">0</h3>
+                    <p>Yêu cầu chờ tiếp nhận sửa chữa</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon purple-bg">⚒</span>
+                        <span class="stat-label">Đang sửa chữa</span>
+                    </div>
+                    <h3 id="techWorkingCount">0</h3>
+                    <p>Công việc đang được thực hiện</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon green-bg">✓</span>
+                        <span class="stat-label">Đã hoàn thành</span>
+                    </div>
+                    <h3 id="techDoneCount">0</h3>
+                    <p>Yêu cầu bảo trì đã khắc phục</p>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-top">
+                        <span class="stat-icon blue-bg">▤</span>
+                        <span class="stat-label">Tổng công việc</span>
+                    </div>
+                    <h3 id="techTotalCount">0</h3>
+                    <p>Toàn bộ sự cố trong hệ thống</p>
+                </div>
+            </section>
+
+            <!-- HANG CHO CONG VIEC (WORK QUEUE) -->
+            <section class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h2>Hàng chờ công việc (Work Queue)</h2>
+                        <p>Danh sách các yêu cầu bảo trì cần xử lý</p>
+                    </div>
+
+                    <div class="request-filters">
+                        <input type="text" id="techSearchInput" placeholder="Tìm theo mã, thiết bị, vị trí...">
+                        <select id="techStatusFilter">
+                            <option value="">Tất cả trạng thái</option>
+                            <option value="Chờ xử lý">Chờ xử lý</option>
+                            <option value="Đang sửa chữa">Đang sửa chữa</option>
+                            <option value="Đã hoàn thành">Đã hoàn thành</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="table-scroll">
+                    <table class="request-table">
+                        <thead>
+                            <tr>
+                                <th>Mã YC</th>
+                                <th>Tiêu đề sự cố</th>
+                                <th>Thiết bị</th>
+                                <th>Vị trí</th>
+                                <th>Mức độ</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="techWorkQueueBody">
+                            <tr>
+                                <td colspan="7" class="empty-cell">Đang tải dữ liệu...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <footer class="page-footer">
+                © 2026 FixFlow · Hệ thống điều phối yêu cầu bảo trì thiết bị
+            </footer>
+
+        </div>
+    </main>
+</div>
+
+<!-- MODAL REPAIR DETAIL & AI CHECKLIST -->
+<div class="request-modal" id="repairDetailModal">
+    <div class="request-modal-content" style="max-width: 750px;">
+        <button type="button" class="request-modal-close" id="closeRepairModal">×</button>
+
+        <h2 id="repairModalTitle">Chi tiết xử lý bảo trì</h2>
+        
+        <div id="repairTicketSummary" class="panel" style="padding: 15px; margin-bottom: 20px; background: #f8fafc;">
+            <!-- Chi tiet ticket được chèn qua JS -->
+        </div>
+
+        <!-- TINH NANG AI REPAIR CHECKLIST (AI-2) -->
+        <section class="panel" style="padding: 18px; margin-bottom: 20px; border-color: #cce0ff;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 20px;">🤖</span>
+                    <div>
+                        <strong style="color: #1768ed; font-size: 14px;">AI Repair Checklist Generator</strong>
+                        <p style="font-size: 11px; color: #64748b; margin-top: 2px;">Tự động phân tích lỗi và sinh quy trình kiểm tra sửa chữa</p>
+                    </div>
+                </div>
+                <button type="button" class="primary-link" id="btnGenerateAiChecklist" style="margin: 0; padding: 8px 14px; font-size: 11px;">
+                    ✨ Sinh Checklist bằng AI
+                </button>
+            </div>
+
+            <div id="aiLoadingState" hidden style="padding: 15px; text-align: center; color: #1768ed; font-size: 12px;">
+                <p>⏳ AI đang phân tích mô tả lỗi và tạo checklist thích hợp...</p>
+            </div>
+
+            <div id="aiErrorState" hidden class="form-error" style="margin-top: 10px;">
+                ⚠️ <span>Không đủ dữ liệu để AI đưa ra đề xuất. Bạn có thể tự thêm danh mục thủ công.</span>
+            </div>
+
+            <div id="aiChecklistResult" hidden style="margin-top: 12px; background: #f0f7ff; padding: 12px; border-radius: 8px;">
+                <div style="font-size: 11px; color: #334155; margin-bottom: 8px;">
+                    <b>💡 Lý do đề xuất từ AI:</b> <span id="aiExplanation">Dựa vào thiết bị và mô tả hiện tượng sự cố.</span>
+                </div>
+                <div id="aiChecklistItems"></div>
+                <div style="display: flex; gap: 10px; margin-top: 12px;">
+                    <button type="button" class="btn-secondary" id="btnRejectAi" style="padding: 6px 12px; font-size: 11px;">Từ chối / Xóa AI</button>
+                    <button type="button" class="btn-submit" id="btnAcceptAi" style="padding: 6px 12px; font-size: 11px;">Chấp nhận quy trình này</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- FORM CAP NHAT TRANG THAI HOA DINH -->
+        <form id="repairUpdateForm">
+            <input type="hidden" id="currentTicketId">
+
+            <div class="form-group">
+                <label for="technicianNote">Ghi chú sửa chữa / Nhật ký kỹ thuật <span class="required">*</span></label>
+                <textarea id="technicianNote" rows="3" placeholder="Ghi lại nguyên nhân sự cố, linh kiện thay thế hoặc tiến độ khắc phục..." required></textarea>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="updateStatus">Cập nhật trạng thái <span class="required">*</span></label>
+                    <select id="updateStatus" required>
+                        <option value="Đang sửa chữa">⚒ Đang sửa chữa</option>
+                        <option value="Đã hoàn thành">✓ Đã hoàn thành</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" id="btnCancelRepair">Hủy bỏ</button>
+                <button type="submit" class="btn-submit">Lưu nhật ký & Cập nhật</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- HOP XAC NHAN DANG XUAT -->
+<div class="modal-overlay" id="logoutModal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="logoutTitle">
+        <button type="button" class="modal-close" id="closeLogout" aria-label="Đóng">×</button>
+        <div class="logout-symbol">⇥</div>
+        <h2 id="logoutTitle">Xác nhận đăng xuất</h2>
+        <p>Bạn có chắc chắn muốn đăng xuất khỏi hệ thống FixFlow không?</p>
+        <div class="modal-actions">
+            <button type="button" class="btn-secondary" id="cancelLogout">Hủy</button>
+            <button type="button" class="btn-danger" id="confirmLogout">Đăng xuất</button>
+        </div>
+    </div>
+</div>
+
+<script src="technician.js"></script>
+</body>
+</html>
