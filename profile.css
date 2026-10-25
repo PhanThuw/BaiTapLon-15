@@ -1,0 +1,154 @@
+/* =========================================================
+   FIXFLOW - TỐI ƯU CÁC Ô & MẶT BẰNG HỒ SƠ CÁ NHÂN GỌN ĐẸP
+========================================================= */
+
+.profile-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+}
+
+@media (max-width: 768px) {
+    .profile-wrapper {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Thẻ thông tin nhanh bên trái */
+.profile-card-left {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 32px 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e2e8f0;
+}
+
+.profile-big-avatar {
+    width: 88px;
+    height: 88px;
+    background: #0052cc;
+    color: #ffffff;
+    font-size: 36px;
+    font-weight: bold;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px auto;
+    box-shadow: 0 4px 12px rgba(0, 82, 204, 0.2);
+}
+
+.profile-card-title {
+    margin-bottom: 4px;
+    color: #1e293b;
+    font-size: 20px;
+}
+
+.profile-card-sub {
+    color: #64748b;
+    font-size: 13px;
+    margin-bottom: 16px;
+}
+
+.role-badge {
+    display: inline-block;
+    background: #e0f2fe;
+    color: #0369a1;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Khối Form bên phải */
+.profile-card-right {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 32px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e2e8f0;
+}
+
+.form-title {
+    margin-bottom: 20px;
+    color: #1e293b;
+    font-size: 18px;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 10px;
+}
+
+/* Lưới căn đều các ô input */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-group-profile {
+    margin-bottom: 20px;
+}
+
+.form-group-profile label {
+    display: block;
+    font-weight: 600;
+    font-size: 13px;
+    color: #334155;
+    margin-bottom: 6px;
+}
+
+.form-group-profile input, 
+.form-group-profile select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 14px;
+    background-color: #f8fafc;
+    transition: all 0.2s ease-in-out;
+    box-sizing: border-box;
+}
+
+.form-group-profile input:focus, 
+.form-group-profile select:focus {
+    border-color: #0052cc;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(0, 82, 204, 0.1);
+    outline: none;
+}
+
+.profile-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    border-top: 1px solid #e2e8f0;
+    padding-top: 20px;
+}
+
+.btn-save-profile {
+    background: #0052cc;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-save-profile:hover {
+    background: #0043a4;
+}
+
+.page-footer {
+    margin-top: 40px;
+}
