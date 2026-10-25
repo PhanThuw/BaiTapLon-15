@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FixFlow - Theo dõi SLA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="home-page" data-page="sla">
+
+<div class="app-layout">
+    <!-- MENU BÊN TRÁI -->
+    <aside class="sidebar">
+        <a href="index.html" class="sidebar-brand">
+            <div class="sidebar-logo">🔧</div>
+            <div>
+                <strong>Fix<span>Flow</span></strong>
+                <small>HỆ THỐNG BẢO TRÌ</small>
+            </div>
+        </a>
+
+        <p class="menu-heading">TỔNG QUAN</p>
+        <a href="index.html" class="nav-link">
+            <span class="nav-icon">⌂</span> Trang chủ
+        </a>
+
+        <p class="menu-heading">NGHIỆP VỤ</p>
+        <a href="create-ticket.html" class="nav-link">
+            <span class="nav-icon">＋</span> Tạo yêu cầu
+        </a>
+        <a href="request-list.html" class="nav-link">
+            <span class="nav-icon">▤</span> Yêu cầu của tôi
+        </a>
+        <a href="technician.html" class="nav-link">
+            <span class="nav-icon">⚒</span> Công việc kỹ thuật
+        </a>
+        <a href="dispatch.html" class="nav-link">
+            <span class="nav-icon">⇄</span> Điều phối công việc
+        </a>
+        <a href="sla.html" class="nav-link active">
+            <span class="nav-icon">◷</span> Theo dõi SLA
+        </a>
+
+        <p class="menu-heading">QUẢN LÝ HỆ THỐNG</p>
+        <a href="assets.html" class="nav-link">
+            <span class="nav-icon">▣</span> Quản lý thiết bị
+        </a>
+        <a href="categories.html" class="nav-link">
+            <span class="nav-icon">▦</span> Danh mục sự cố
+        </a>
+        <a href="users.html" class="nav-link">
+            <span class="nav-icon">♙</span> Quản lý người dùng
+        </a>
+        <a href="reports.html" class="nav-link">
+            <span class="nav-icon">▥</span> Báo cáo thống kê
+        </a>
+        <a href="profile.html" class="nav-link">
+            <span class="nav-icon">◎</span> Hồ sơ cá nhân
+        </a>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-account">
+                <div class="avatar" id="sidebarAvatar">U</div>
+                <div class="account-info">
+                    <strong id="sidebarName">Người dùng</strong>
+                    <small id="sidebarEmail">user@email.com</small>
+                </div>
+            </div>
+            <button type="button" class="logout-button" id="openLogout">
+                <span class="nav-icon">⇥</span> Đăng xuất
+            </button>
+        </div>
+    </aside>
+
+    <!-- NỘI DUNG CHÍNH -->
+    <main class="main-area">
+        <header class="topbar">
+            <div>
+                <p class="breadcrumb">FixFlow / Nghiệp vụ / Theo dõi SLA</p>
+                <h2>Giám sát thời hạn xử lý sự cố (SLA)</h2>
+            </div>
+            <div class="topbar-account">
+                <div class="avatar" id="topAvatar">U</div>
+                <div>
+                    <strong id="topName">Người dùng</strong>
+                    <small id="topEmail">user@email.com</small>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-content">
+            <!-- THỐNG KÊ NHANH SLA -->
+            <div class="stats-grid" style="margin-bottom: 20px;">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #e0f2fe; color: #0284c7;">✓</div>
+                    <div>
+                        <h3 id="slaOnTime">0</h3>
+                        <p>Đúng tiến độ SLA</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fef3c7; color: #d97706;">⚠</div>
+                    <div>
+                        <h3 id="slaWarning">0</h3>
+                        <p>Sắp đến hạn</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fee2e2; color: #dc2626;">✕</div>
+                    <div>
+                        <h3 id="slaOverdue">0</h3>
+                        <p>Quá hạn SLA</p>
+                    </div>
+                </div>
+            </div>
+
+            <section class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h2>Danh sách giám sát SLA yêu cầu bảo trì</h2>
+                        <p>Kiểm soát thời gian phản hồi và hoàn thành công việc</p>
+                    </div>
+                </div>
+
+                <div class="table-scroll">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Mã yêu cầu</th>
+                                <th>Tiêu đề sự cố</th>
+                                <th>Mức độ</th>
+                                <th>Ngày tạo</th>
+                                <th>Trạng thái SLA</th>
+                                <th>Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody id="slaTableBody">
+                            <tr><td colspan="6" class="empty-cell">Đang tải dữ liệu...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <footer class="page-footer">
+                © 2026 FixFlow · Hệ thống điều phối yêu cầu bảo trì thiết bị
+            </footer>
+        </div>
+    </main>
+</div>
+
+<!-- MODAL ĐĂNG XUẤT -->
+<div class="modal-overlay" id="logoutModal" hidden>
+    <div class="modal-card" role="dialog">
+        <button type="button" class="modal-close" id="closeLogout">×</button>
+        <div class="logout-symbol">⇥</div>
+        <h2>Xác nhận đăng xuất</h2>
+        <p>Bạn có chắc chắn muốn đăng xuất khỏi hệ thống FixFlow không?</p>
+        <div class="modal-actions">
+            <button type="button" class="btn-secondary" id="cancelLogout">Hủy</button>
+            <button type="button" class="btn-danger" id="confirmLogout">Đăng xuất</button>
+        </div>
+    </div>
+</div>
+
+<script src="sla.js"></script>
+</body>
+</html>
