@@ -1,0 +1,161 @@
+/* ===================================================
+   FIXFLOW - CSS BỔ SUNG CHO CÔNG VIỆC KỸ THUẬT VIÊN (TECHNICIAN)
+=================================================== */
+
+/* --- 1. Tùy chỉnh các bảng & hàng chờ công việc (Work Queue) --- */
+.home-page .request-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 12px;
+}
+
+.home-page .request-table th {
+    background: #f5f8fd;
+    color: #687891;
+    font-weight: bold;
+    padding: 14px 16px;
+    border-bottom: 1px solid #e2eaf5;
+    white-space: nowrap;
+}
+
+.home-page .request-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid #edf1f7;
+    color: #20304a;
+    vertical-align: middle;
+}
+
+.home-page .request-table tbody tr:hover {
+    background: #f8fbff;
+}
+
+/* --- 2. Thẻ trạng thái & Nhãn mức độ --- */
+.ticket-status {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 20px;
+    background: #fff0dc;
+    color: #e27b17;
+    font-size: 11px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.ticket-status.working {
+    background: #eee5ff;
+    color: #8150d8;
+}
+
+.ticket-status.done {
+    background: #ddf7e9;
+    color: #168653;
+}
+
+.ticket-status.cancelled {
+    background: #ffebeb;
+    color: #dc3e48;
+}
+
+/* --- 3. Bố cục Modal xử lý sự cố (Repair Detail Modal) --- */
+#repairDetailModal .request-modal-content {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 20px 50px rgba(16, 35, 69, 0.25);
+    border: 1px solid #e2eaf5;
+    animation: modalFadeIn 0.25s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#repairModalTitle {
+    font-size: 20px;
+    color: #14284b;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #edf1f7;
+}
+
+#repairTicketSummary {
+    border-radius: 10px;
+    background: #f8faff !important;
+    border: 1px solid #dce4ef !important;
+    line-height: 1.6;
+}
+
+#repairTicketSummary b {
+    color: #1768ed;
+}
+
+/* --- 4. Khối trải nghiệm AI (AI Repair Checklist Generator) --- */
+.panel section, 
+#repairDetailModal section.panel {
+    background: #f4f8ff;
+    border: 1px solid #cce0ff;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+#aiChecklistResult {
+    animation: fadeIn 0.3s ease-in-out;
+    border: 1px solid #b2d3ff;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+#aiChecklistItems label {
+    cursor: pointer;
+    padding: 6px 10px;
+    border-radius: 6px;
+    background: #ffffff;
+    border: 1px solid #e2eaf5;
+    transition: background 0.15s ease;
+}
+
+#aiChecklistItems label:hover {
+    background: #eaf3ff;
+}
+
+#aiChecklistItems input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #1768ed;
+    cursor: pointer;
+}
+
+/* --- 5. Tương thích Responsive cho thiết bị di động --- */
+@media (max-width: 768px) {
+    #repairDetailModal .request-modal-content {
+        padding: 18px;
+        max-width: 95% !important;
+    }
+
+    #repairTicketSummary div {
+        grid-template-columns: 1fr !important;
+    }
+
+    .panel .request-filters {
+        flex-direction: column;
+        width: 100%;
+        gap: 8px;
+        margin-top: 12px;
+    }
+
+    .panel .request-filters input,
+    .panel .request-filters select {
+        width: 100% !important;
+    }
+}
