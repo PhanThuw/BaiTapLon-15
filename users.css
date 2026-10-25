@@ -1,0 +1,11 @@
+/* CSS Quản lý người dùng */
+.user-action-btns {
+    display: flex;
+    gap: 8px;
+}
+
+.user-modal-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+}

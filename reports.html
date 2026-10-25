@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FixFlow - Báo cáo thống kê & AI Insights</title>
+        <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="reports.css">
+</head>
+<body class="home-page" data-page="reports">
+
+<div class="app-layout">
+    <!-- MENU BÊN TRÁI -->
+    <aside class="sidebar">
+        <a href="index.html" class="sidebar-brand">
+            <div class="sidebar-logo">🔧</div>
+            <div>
+                <strong>Fix<span>Flow</span></strong>
+                <small>HỆ THỐNG BẢO TRÌ</small>
+            </div>
+        </a>
+
+        <p class="menu-heading">TỔNG QUAN</p>
+        <a href="index.html" class="nav-link"><span class="nav-icon">⌂</span> Trang chủ</a>
+
+        <p class="menu-heading">NGHIỆP VỤ</p>
+        <a href="create-ticket.html" class="nav-link"><span class="nav-icon">＋</span> Tạo yêu cầu</a>
+        <a href="request-list.html" class="nav-link"><span class="nav-icon">▤</span> Yêu cầu của tôi</a>
+        <a href="technician.html" class="nav-link"><span class="nav-icon">⚒</span> Công việc kỹ thuật</a>
+        <a href="dispatch.html" class="nav-link"><span class="nav-icon">⇄</span> Điều phối công việc</a>
+        <a href="sla.html" class="nav-link"><span class="nav-icon">◷</span> Theo dõi SLA</a>
+
+        <p class="menu-heading">QUẢN LÝ HỆ THỐNG</p>
+        <a href="assets.html" class="nav-link"><span class="nav-icon">▣</span> Quản lý thiết bị</a>
+        <a href="categories.html" class="nav-link"><span class="nav-icon">▦</span> Danh mục sự cố</a>
+        <a href="users.html" class="nav-link"><span class="nav-icon">♙</span> Quản lý người dùng</a>
+        <a href="reports.html" class="nav-link active"><span class="nav-icon">▥</span> Báo cáo thống kê</a>
+        <a href="profile.html" class="nav-link"><span class="nav-icon">◎</span> Hồ sơ cá nhân</a>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-account">
+                <div class="avatar" id="sidebarAvatar">U</div>
+                <div class="account-info">
+                    <strong id="sidebarName">Quản lý bảo trì</strong>
+                    <small id="sidebarEmail">manager@fixflow.com</small>
+                </div>
+            </div>
+            <button type="button" class="logout-button" id="openLogout"><span class="nav-icon">⇥</span> Đăng xuất</button>
+        </div>
+    </aside>
+
+    <!-- NỘI DUNG CHÍNH -->
+    <main class="main-area">
+        <header class="topbar">
+            <div>
+                <p class="breadcrumb">FixFlow / Quản lý hệ thống / Báo cáo thống kê</p>
+                <h2>Báo cáo tổng quan & Phân tích sự cố</h2>
+            </div>
+            <div class="topbar-account">
+                <div class="avatar" id="topAvatar">U</div>
+                <div>
+                    <strong id="topName">Quản lý bảo trì</strong>
+                    <small id="managerEmail">manager@fixflow.com</small>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-content">
+            <!-- THỐNG KÊ TỔNG QUAN -->
+            <section class="stats-grid" style="margin-bottom: 25px;">
+                <div class="stat-card">
+                    <div class="stat-top"><span class="stat-icon blue-bg">▤</span><span class="stat-label">Tổng sự cố ghi nhận</span></div>
+                    <h3 id="repTotal">0</h3>
+                    <p>Toàn hệ thống bảo trì</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-top"><span class="stat-icon green-bg">✓</span><span class="stat-label">Đã hoàn thành</span></div>
+                    <h3 id="repDone">0</h3>
+                    <p>Đã sửa chữa thành công</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-top"><span class="stat-icon orange-bg">◷</span><span class="stat-label">Đang tồn đọng</span></div>
+                    <h3 id="repPending">0</h3>
+                    <p>Chờ xử lý & đang sửa</p>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-top"><span class="stat-icon purple-bg">⚡</span><span class="stat-label">Tỷ lệ hoàn thành</span></div>
+                    <h3 id="repRate">0%</h3>
+                    <p>Hiệu suất vận hành</p>
+                </div>
+            </section>
+
+            <!-- TÍNH NĂNG AI: FAILURE PATTERN SUMMARY (AI-3) -->
+            <section class="panel" style="padding: 24px; margin-bottom: 28px; border-color: #b2d3ff; background: #f4f8ff;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span style="font-size: 26px;">🤖</span>
+                        <div>
+                            <h2 style="color: #1768ed; font-size: 18px;">AI Failure Pattern Summary (Tóm tắt lỗi lặp lại)</h2>
+                            <p style="font-size: 11px; color: #64748b; margin-top: 3px;">Phân tích lịch sử ticket để phát hiện các thiết bị lỗi lặp lại nhiều lần[cite: 1].</p>
+                        </div>
+                    </div>
+                    <button type="button" class="primary-link" id="btnRunAiSummary" style="border:none; cursor:pointer;">
+                        ✨ Phân tích xu hướng lỗi
+                    </button>
+                </div>
+
+                <div id="aiReportLoading" hidden style="padding: 20px; text-align: center; color: #1768ed; font-size: 13px;">
+                    <p>⏳ AI đang quét cơ sở dữ liệu sự cố và tìm kiếm mẫu lỗi lặp lại...</p>
+                </div>
+
+                <div id="aiReportError" hidden class="form-error" style="margin-top: 10px;">
+                    ⚠️ <span>Không đủ dữ liệu trong hệ thống để AI lập báo cáo mẫu lỗi. Hãy tạo thêm các yêu cầu bảo trì!</span>
+                </div>
+
+                <div id="aiReportResult" hidden style="margin-top: 15px; background: white; padding: 18px; border-radius: 10px; border: 1px solid #cce0ff;">
+                    <div style="font-size: 12px; color: #334155; margin-bottom: 12px;">
+                        <b>💡 Giải thích từ AI:</b> <span id="aiReportExplanation">Phân tích tần suất hư hỏng theo thiết bị và danh mục.</span>
+                    </div>
+                    <div id="aiReportContent" style="font-size: 12px; line-height: 1.8; color: #1e293b;"></div>
+                    <div style="display: flex; gap: 10px; margin-top: 15px;">
+                        <button type="button" class="btn-secondary" id="btnDismissAiReport" style="padding: 7px 14px; font-size: 11px;">Bỏ qua</button>
+                        <button type="button" class="btn-submit" id="btnApplyAiReport" style="padding: 7px 14px; font-size: 11px;">Lưu khuyến nghị bảo trì</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- BẢNG THỐNG KÊ CHI TIẾT THEO THIẾT BỊ -->
+            <section class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h2>Thống kê chi tiết theo thiết bị</h2>
+                        <p>Tổng hợp số lượng sự cố theo từng loại thiết bị trong hệ thống.</p>
+                    </div>
+                </div>
+                <div class="table-scroll">
+                    <table class="request-table">
+                        <thead>
+                            <tr>
+                                <th>Loại thiết bị</th>
+                                <th>Tổng số sự cố</th>
+                                <th>Đang chờ xử lý</th>
+                                <th>Đang sửa chữa</th>
+                                <th>Đã hoàn thành</th>
+                            </tr>
+                        </thead>
+                        <tbody id="assetReportTableBody">
+                            <tr><td colspan="5" class="empty-cell">Đang tải dữ liệu báo cáo...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script src="reports.js"></script>
+</body>
+</html>
