@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FixFlow - Quản lý người dùng</title>
+        <link rel="stylesheet" href="index.css">
+
+    <link rel="stylesheet" href="users.css">
+</head>
+<body class="home-page" data-page="users">
+
+<div class="app-layout">
+
+    <!-- MENU NGANG PHIA TREN -->
+    <aside class="sidebar">
+
+        <a href="index.html" class="sidebar-brand">
+            <div class="sidebar-logo">🔧</div>
+            <div>
+                <strong>Fix<span>Flow</span></strong>
+                <small>HỆ THỐNG BẢO TRÌ</small>
+            </div>
+        </a>
+
+        
+<nav class="main-navigation">
+
+    <!-- TRANG CHU -->
+    <a href="index.html" class="nav-link active">
+        <span class="nav-icon">⌂</span>
+        Trang chủ
+    </a>
+
+    <!-- MENU VAI TRO -->
+    <div class="role-menu">
+
+        <button type="button" class="nav-link role-button"
+                id="roleButton" aria-expanded="false">
+            <span class="nav-icon">♙</span>
+            Vai trò
+            <span class="role-arrow">▾</span>
+        </button>
+
+        <div class="role-dropdown" id="roleDropdown" hidden>
+
+            <!-- NGUOI DUNG -->
+            <div class="role-item">
+                <button type="button" class="role-option"
+                        data-role="user">
+                    <span>♙</span>
+                    Người dùng
+                    <span class="role-arrow">›</span>
+                </button>
+
+                <div class="role-submenu" hidden>
+                    <a href="create-ticket.html">Tạo yêu cầu</a>
+                    <a href="request-list.html">Yêu cầu của tôi</a>
+                </div>
+            </div>
+
+            <!-- KY THUAT VIEN -->
+            <div class="role-item">
+                <button type="button" class="role-option"
+                        data-role="technician">
+                    <span>⚒</span>
+                    Kỹ thuật viên
+                    <span class="role-arrow">›</span>
+                </button>
+
+                <div class="role-submenu" hidden>
+                    <a href="technician.html">Công việc kỹ thuật</a>
+                </div>
+            </div>
+
+            <!-- QUAN TRI VIEN -->
+            <div class="role-item">
+                <button type="button" class="role-option"
+                        data-role="admin">
+                    <span>⚙</span>
+                    Quản trị viên
+                    <span class="role-arrow">›</span>
+                </button>
+
+                <div class="role-submenu" hidden>
+                    <a href="dispatch.html">Điều phối công việc</a>
+                    <a href="sla.html">Theo dõi SLA</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CAC TRANG QUAN LY KHAC -->
+    <a href="assets.html" class="nav-link">
+        <span class="nav-icon">▣</span>
+        Quản lý thiết bị
+    </a>
+
+    <a href="categories.html" class="nav-link">
+        <span class="nav-icon">▦</span>
+        Danh mục sự cố
+    </a>
+
+    <a href="users.html" class="nav-link">
+        <span class="nav-icon">♙</span>
+        Quản lý người dùng
+    </a>
+
+    <a href="reports.html" class="nav-link">
+        <span class="nav-icon">▥</span>
+        Báo cáo thống kê
+    </a>
+
+    <a href="profile.html" class="nav-link">
+        <span class="nav-icon">◎</span>
+        Hồ sơ cá nhân
+    </a>
+
+</nav>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-account">
+                <div class="avatar" id="sidebarAvatar">U</div>
+                <div class="account-info">
+                    <strong id="sidebarName">Người dùng</strong>
+                    <small id="sidebarEmail">user@email.com</small>
+                </div>
+            </div>
+
+            <button type="button" class="logout-button" id="openLogout">
+                <span class="nav-icon">⇥</span> Đăng xuất
+            </button>
+        </div>
+
+    </aside>
+
+    <!-- NỘI DUNG CHÍNH -->
+    <main class="main-area">
+        <header class="topbar">
+            <div>
+                <p class="breadcrumb">FixFlow / Quản lý hệ thống / Quản lý người dùng</p>
+                <h2>Quản lý tài khoản & Phân quyền</h2>
+            </div>
+            <div class="topbar-account">
+                <div class="avatar" id="topAvatar">U</div>
+                <div>
+                    <strong id="topName">Quản trị viên</strong>
+                    <small id="topEmail">admin@fixflow.com</small>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-content">
+            <section class="panel">
+                <div class="panel-heading">
+                    <div>
+                        <h2>Danh sách người dùng hệ thống</h2>
+                        <p>Quản lý tài khoản, thay đổi vai trò hoặc vô hiệu hóa tài khoản.</p>
+                    </div>
+                    <button type="button" class="primary-link" id="openAddUserModal" style="border:none; cursor:pointer;">
+                        ＋ Thêm tài khoản mới
+                    </button>
+                </div>
+
+                <div class="request-filters">
+                    <input type="text" id="searchUser" placeholder="Tìm kiếm theo tên hoặc email...">
+                    <select id="roleFilter">
+                        <option value="">Tất cả vai trò</option>
+                        <option value="Người yêu cầu">Người yêu cầu</option>
+                        <option value="Kỹ thuật viên">Kỹ thuật viên</option>
+                        <option value="Quản lý bảo trì">Quản lý bảo trì</option>
+                        <option value="Quản trị viên">Quản trị viên</option>
+                    </select>
+                </div>
+
+                <div class="table-scroll">
+                    <table class="request-table">
+                        <thead>
+                            <tr>
+                                <th>Họ và tên</th>
+                                <th>Email</th>
+                                <th>Vai trò hệ thống</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+                        <tbody id="userTableBody">
+                            <tr><td colspan="5" class="empty-cell">Đang tải danh sách người dùng...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<!-- MODAL THÊM / SỬA NGƯỜI DÙNG -->
+<div class="request-modal" id="userModal">
+    <div class="request-modal-content" style="max-width: 480px;">
+        <button type="button" class="request-modal-close" id="closeUserModal">×</button>
+        <h2 id="userModalTitle">Thêm tài khoản mới</h2>
+        
+        <form id="userForm">
+            <input type="hidden" id="editingEmail">
+            <div class="form-group">
+                <label>Họ và tên <span class="required">*</span></label>
+                <input type="text" id="modalName" placeholder="Nhập họ tên" required>
+            </div>
+            <div class="form-group">
+                <label>Email đăng nhập <span class="required">*</span></label>
+                <input type="email" id="modalEmail" placeholder="Nhập email" required>
+            </div>
+            <div class="form-group">
+                <label>Vai trò hệ thống <span class="required">*</span></label>
+                <select id="modalRole">
+                    <option value="Người yêu cầu">Người yêu cầu</option>
+                    <option value="Kỹ thuật viên">Kỹ thuật viên</option>
+                    <option value="Quản lý bảo trì">Quản lý bảo trì</option>
+                    <option value="Quản trị viên">Quản trị viên</option>
+                </select>
+            </div>
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" id="cancelUserModal">Hủy</button>
+                <button type="submit" class="btn-submit">Lưu thông tin</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="users.js"></script>
+</body>
+</html>
