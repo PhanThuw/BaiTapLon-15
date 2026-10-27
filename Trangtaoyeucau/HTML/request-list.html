@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách yêu cầu - FixFlow</title>
+    <link rel="stylesheet" href="request-list.css">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body class="home-page">
+
+    <div class="app-layout">
+
+    <!-- MENU NGANG PHIA TREN -->
+    <aside class="sidebar">
+
+        <a href="index.html" class="sidebar-brand">
+            <div class="sidebar-logo">🔧</div>
+            <div>
+                <strong>Fix<span>Flow</span></strong>
+                <small>HỆ THỐNG BẢO TRÌ</small>
+            </div>
+        </a>
+
+        
+<nav class="main-navigation">
+
+    <!-- TRANG CHU -->
+    <a href="index.html" class="nav-link active">
+        <span class="nav-icon">⌂</span>
+        Trang chủ
+    </a>
+
+    <!-- MENU VAI TRO -->
+    <div class="role-menu">
+
+        <button type="button" class="nav-link role-button"
+                id="roleButton" aria-expanded="false">
+            <span class="nav-icon">♙</span>
+            Vai trò
+            <span class="role-arrow">▾</span>
+        </button>
+
+        <div class="role-dropdown" id="roleDropdown" hidden>
+
+            <!-- NGUOI DUNG -->
+            <div class="role-item">
+                <button type="button" class="role-option"
+                        data-role="user">
+                    <span>♙</span>
+                    Người dùng
+                    <span class="role-arrow">›</span>
+                </button>
+
+                <div class="role-submenu" hidden>
+                    <a href="create-ticket.html">Tạo yêu cầu</a>
+                    <a href="request-list.html">Yêu cầu của tôi</a>
+                </div>
+            </div>
+
+            <!-- KY THUAT VIEN -->
+            <div class="role-item">
+                <button type="button" class="role-option"
+                        data-role="technician">
+                    <span>⚒</span>
+                    Kỹ thuật viên
+                    <span class="role-arrow">›</span>
+                </button>
+
+                <div class="role-submenu" hidden>
+                    <a href="technician.html">Công việc kỹ thuật</a>
+                </div>
+            </div>
+
+            <!-- QUAN TRI VIEN -->
+            <div class="role-item">
+                <button type="button" class="role-option"
+                        data-role="admin">
+                    <span>⚙</span>
+                    Quản trị viên
+                    <span class="role-arrow">›</span>
+                </button>
+
+                <div class="role-submenu" hidden>
+                    <a href="dispatch.html">Điều phối công việc</a>
+                    <a href="sla.html">Theo dõi SLA</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CAC TRANG QUAN LY KHAC -->
+    <a href="assets.html" class="nav-link">
+        <span class="nav-icon">▣</span>
+        Quản lý thiết bị
+    </a>
+
+    <a href="categories.html" class="nav-link">
+        <span class="nav-icon">▦</span>
+        Danh mục sự cố
+    </a>
+
+    <a href="users.html" class="nav-link">
+        <span class="nav-icon">♙</span>
+        Quản lý người dùng
+    </a>
+
+    <a href="reports.html" class="nav-link">
+        <span class="nav-icon">▥</span>
+        Báo cáo thống kê
+    </a>
+
+    <a href="profile.html" class="nav-link">
+        <span class="nav-icon">◎</span>
+        Hồ sơ cá nhân
+    </a>
+
+</nav>
+
+        <div class="sidebar-bottom">
+            <div class="sidebar-account">
+                <div class="avatar" id="sidebarAvatar">U</div>
+                <div class="account-info">
+                    <strong id="sidebarName">Người dùng</strong>
+                    <small id="sidebarEmail">user@email.com</small>
+                </div>
+            </div>
+
+            <button type="button" class="logout-button" id="openLogout">
+                <span class="nav-icon">⇥</span> Đăng xuất
+            </button>
+        </div>
+
+    </aside>
+
+        <main class="request-main">
+
+            <header class="request-header">
+                <div>
+                    <p class="request-breadcrumb">Trang chủ / Yêu cầu của tôi</p>
+                    <h1>Yêu cầu bảo trì của tôi</h1>
+                    <p>Theo dõi và quản lý các yêu cầu bảo trì thiết bị.</p>
+                </div>
+
+                <a href="create-ticket.html" class="request-create-btn">
+                    + Tạo yêu cầu mới
+                </a>
+            </header>
+
+            <section class="request-stats">
+                <div class="request-stat-card">
+                    <span>Tổng yêu cầu</span>
+                    <strong id="totalCount">0</strong>
+                </div>
+
+                <div class="request-stat-card">
+                    <span>Chờ xử lý</span>
+                    <strong id="pendingCount">0</strong>
+                </div>
+
+                <div class="request-stat-card">
+                    <span>Đang sửa chữa</span>
+                    <strong id="workingCount">0</strong>
+                </div>
+
+                <div class="request-stat-card">
+                    <span>Đã hoàn thành</span>
+                    <strong id="doneCount">0</strong>
+                </div>
+            </section>
+
+            <section class="request-table-card">
+                <div class="request-table-heading">
+                    <div>
+                        <h2>Danh sách yêu cầu</h2>
+                        <p>Các yêu cầu bạn đã gửi lên hệ thống.</p>
+                    </div>
+                </div>
+zz
+                <div class="request-filters">
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Tìm theo mã, tên thiết bị..."
+                    >
+
+                    <select id="statusFilter">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="Chờ xử lý">Chờ xử lý</option>
+                        <option value="Đang xử lý">Đang xử lý</option>
+                        <option value="Đang sửa chữa">Đang sửa chữa</option>
+                        <option value="Đã hoàn thành">Đã hoàn thành</option>
+                        <option value="Đã hủy">Đã hủy</option>
+                    </select>
+                </div>
+
+                <div class="request-table-wrap">
+                    <table class="request-table">
+                        <thead>
+                            <tr>
+                                <th>Mã yêu cầu</th>
+                                <th>Tiêu đề</th>
+                                <th>Thiết bị</th>
+                                <th>Mức độ</th>
+                                <th>Ngày tạo</th>
+                                <th>Trạng thái</th>
+                                <th>Thao tác</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="ticketTableBody">
+                            <tr>
+                                <td colspan="7">Đang tải dữ liệu...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <p id="resultCount" class="request-result-count"></p>
+            </section>
+
+        </main>
+    </div>
+
+    <div class="request-modal" id="detailModal">
+        <div class="request-modal-content">
+            <button type="button" class="request-modal-close"
+                id="closeDetailBtn">×</button>
+
+            <h2>Chi tiết yêu cầu</h2>
+            <div id="ticketDetail"></div>
+        </div>
+    </div>
+
+    <script src="request-list.js"></script>
+</body>
+</html>
