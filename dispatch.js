@@ -1,267 +1,350 @@
-/* =========================================================
-   FIXFLOW - ĐIỀU PHỐI CÔNG VIỆC & GỢI Ý KỸ THUẬT VIÊN
-========================================================= */
+
+/* =========================================
+   FIXFLOW - DIEU PHOI CONG VIEC
+========================================= */
 
 var currentActiveTicketMa = null;
 
-// Danh sách dữ liệu mẫu Kỹ thuật viên sẵn có trong hệ thống
 var listTechnicians = [
-    { id: "KTV01", hoTen: "Nguyễn Văn A", chuyenMon: "Hỏng hóc thiết bị", khuVực: "Tòa A", trangThai: "Đang rảnh", soDienThoai: "0912345678" },
-    { id: "KTV02", hoTen: "Phạm Thị D", chuyenMon: "Lỗi mạng", khuVực: "Tòa A", trangThai: "Đang bận", soDienThoai: "0988123456" },
-    { id: "KTV03", hoTen: "Trần Văn C", chuyenMon: "Điện lạnh", khuVực: "Tòa B", trangThai: "Đang rảnh", soDienThoai: "0905111222" },
-    { id: "KTV04", hoTen: "Lê Hoàng Nam", chuyenMon: "Hỏng hóc thiết bị", khuVực: "Tòa C", trangThai: "Đang rảnh", soDienThoai: "0933444555" }
+    "Nguyễn Văn Kỹ Thuật (KTV 1)",
+    "Trần Văn Thợ (KTV 2)",
+    "Lê Văn Sửa (KTV 3)"
 ];
 
-function fnGanText(id, va) {
-    var el = document.getElementById(id);
-    if (el) {
-        el.textContent = (va !== undefined && va !== null) ? va : "";
-    }
-}
-
-function fnKichHoatDieuPhoi() {
+/* Lay danh sach yeu cau */
+function layDanhSachYeuCau() {
     try {
-        var listTickets = [];
-        var rawData = localStorage.getItem("fixflow_tickets");
-        
-        if (rawData) {
-            try {
-                listTickets = JSON.parse(rawData);
-            } catch (e) {
-                listTickets = [];
-            }
-        }
+        var data = JSON.parse(
+            localStorage.getItem("fixflow_tickets") || "[]"
+        );
 
-        if (!Array.isArray(listTickets) || listTickets.length === 0) {
-            listTickets = [
-                {
-                    ma: "FF-202610191",
-                    tieuDe: "Máy chiếu phòng A201 không lên nguồn",
-                    tenThietBi: "Máy chiếu Panasonic A201",
-                    danhMuc: "Hỏng hóc thiết bị",
-                    mucDo: "Khẩn cấp",
-                    viTri: "Phòng A201 - Tòa A",
-                    moTa: "Giảng viên cắm cáp nguồn nhưng đèn báo không sáng.",
-                    trangThai: "Chờ xử lý",
-                    kyThuatVien: "",
-                    nguoiTao: "Hương",
-                    emailNguoiTao: "huong@gmail.com",
-                    ngayTao: "19/10/2026 09:00"
-                },
-                {
-                    ma: "FF-202610192",
-                    tieuDe: "Lỗi kết nối mạng WiFi tầng 2",
-                    tenThietBi: "Router Cisco Tầng 2",
-                    danhMuc: "Lỗi mạng",
-                    mucDo: "Cao",
-                    viTri: "Hành lang Tầng 2 - Tòa A",
-                    moTa: "Tín hiệu chập chờn, sinh viên không kết nối được internet.",
-                    trangThai: "Đang sửa chữa",
-                    kyThuatVien: "Phạm Thị D",
-                    nguoiTao: "Hương",
-                    emailNguoiTao: "huong@gmail.com",
-                    ngayTao: "19/10/2026 08:30"
-                },
-                {
-                    ma: "FF-202610193",
-                    tieuDe: "Điều hòa phòng B102 chảy nước",
-                    tenThietBi: "Điều hòa Daikin B102",
-                    danhMuc: "Điện lạnh",
-                    mucDo: "Trung bình",
-                    viTri: "Phòng B102 - Tòa B",
-                    moTa: "Máy vẫn lạnh nhưng nước ngưng chảy nhỏ giọt.",
-                    trangThai: "Đã hoàn thành",
-                    kyThuatVien: "Trần Văn C",
-                    nguoiTao: "Hương",
-                    emailNguoiTao: "huong@gmail.com",
-                    ngayTao: "18/10/2026 14:15"
-                }
-            ];
-            localStorage.setItem("fixflow_tickets", JSON.stringify(listTickets));
-        }
-
-        // Cập nhật thông tin tài khoản
-        var rawUser = sessionStorage.getItem("fixflow_currentUser");
-        var currUser = { hoTen: "Hương", email: "huong@gmail.com" };
-        if (rawUser) {
-            try { currUser = JSON.parse(rawUser); } catch (err) {}
-        }
-
-        var nameStr = currUser.hoTen || "Hương";
-        var emailStr = currUser.email || "huong@gmail.com";
-        var avatarChar = nameStr.trim().charAt(0).toUpperCase() || "H";
-
-        fnGanText("sidebarName", nameStr);
-        fnGanText("sidebarEmail", emailStr);
-        fnGanText("topName", nameStr);
-        fnGanText("topEmail", emailStr);
-        fnGanText("sidebarAvatar", avatarChar);
-        fnGanText("topAvatar", avatarChar);
-
-        // Tính toán thống kê
-        var cTotal = listTickets.length;
-        var cUnassigned = 0;
-        var cWorking = 0;
-        var cDone = 0;
-
-        for (var i = 0; i < listTickets.length; i++) {
-            var item = listTickets[i];
-            var st = (item.trangThai || "").toLowerCase();
-            var ktv = (item.kyThuatVien || "").trim();
-
-            if (!ktv || st.includes("chờ") || st.includes("chưa")) {
-                cUnassigned++;
-            } else if (st.includes("sửa") || st.includes("đang")) {
-                cWorking++;
-            } else if (st.includes("hoàn thành") || st.includes("xong")) {
-                cDone++;
-            }
-        }
-
-        fnGanText("statTotal", cTotal);
-        fnGanText("statUnassigned", cUnassigned);
-        fnGanText("statWorking", cWorking);
-        fnGanText("statDone", cDone);
-
-        // Lọc bảng
-        var searchInput = document.getElementById("dispatchSearch");
-        var filterSelect = document.getElementById("dispatchFilter");
-        var kw = searchInput ? searchInput.value.trim().toLowerCase() : "";
-        var filterVal = filterSelect ? filterSelect.value : "";
-
-        var filteredList = [];
-        for (var j = 0; j < listTickets.length; j++) {
-            var t = listTickets[j];
-            var fullText = [t.ma, t.tieuDe, t.tenThietBi, t.viTri, t.kyThuatVien].join(" ").toLowerCase();
-            var matchKW = fullText.indexOf(kw) !== -1;
-            var matchFilter = true;
-
-            if (filterVal) {
-                var statusStr = (t.trangThai || "").toLowerCase();
-                if (filterVal === "unassigned") {
-                    matchFilter = !t.kyThuatVien || statusStr.includes("chờ");
-                } else {
-                    matchFilter = statusStr.indexOf(filterVal.toLowerCase()) !== -1;
-                }
-            }
-
-            if (matchKW && matchFilter) {
-                filteredList.push(t);
-            }
-        }
-
-        // Đổ dữ liệu ra bảng
-        var tbody = document.getElementById("dispatchTableBody");
-        if (tbody) {
-            if (filteredList.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:20px; color:#666;">Không có yêu cầu điều phối nào phù hợp.</td></tr>';
-            } else {
-                var htmlRows = "";
-                for (var k = 0; k < filteredList.length; k++) {
-                    var tk = filteredList[k];
-                    var hasKtv = Boolean(tk.kyThuatVien && tk.kyThuatVien.trim());
-                    var statusClass = "status-tag";
-                    var stLower = (tk.trangThai || "").toLowerCase();
-
-                    if (stLower.includes("chờ") || stLower.includes("chưa")) statusClass = "status-pending";
-                    else if (stLower.includes("sửa") || stLower.includes("đang")) statusClass = "status-working";
-                    else if (stLower.includes("hoàn thành") || stLower.includes("xong")) statusClass = "status-done";
-
-                    htmlRows += '<tr>' +
-                        '<td><strong>' + (tk.ma || "") + '</strong></td>' +
-                        '<td><div><strong>' + (tk.tieuDe || "") + '</strong></div><small style="color:#666;">' + (tk.tenThietBi || "") + '</small></td>' +
-                        '<td><strong>' + (tk.mucDo || "Trung bình") + '</strong></td>' +
-                        '<td><small>' + (tk.viTri || "—") + '</small></td>' +
-                        '<td>' + (hasKtv ? ('👨‍🔧 <strong>' + tk.kyThuatVien + '</strong>') : '<span style="color:#e27b17; font-weight:500;">⚠️ Chưa phân công</span>') + '</td>' +
-                        '<td><span class="' + statusClass + '">' + (tk.trangThai || "Chờ xử lý") + '</span></td>' +
-                        '<td>' +
-                            '<button type="button" class="btn-action" onclick="window.moModalTimKTV(\'' + tk.ma + '\')">' + (hasKtv ? "Đổi KTV" : "🔍 Tìm KTV phù hợp") + '</button>' +
-                        '</td>' +
-                    '</tr>';
-                }
-                tbody.innerHTML = htmlRows;
-            }
-        }
-
-        fnGanText("dispatchResultCount", "Hiển thị " + filteredList.length + " / " + listTickets.length + " yêu cầu");
-
+        return Array.isArray(data) ? data : [];
     } catch (error) {
-        console.error("Lỗi điều phối:", error);
+        console.error("Loi doc danh sach yeu cau:", error);
+        return [];
     }
 }
 
-// Mở Modal Tìm KTV phù hợp dựa vào danh mục và vị trí yêu cầu
-window.moModalTimKTV = function(maYC) {
-    currentActiveTicketMa = maYC;
-    var list = JSON.parse(localStorage.getItem("fixflow_tickets") || "[]");
-    var ticket = list.find(function(t) { return t.ma === maYC; });
+/* Luu danh sach yeu cau */
+function luuDanhSachYeuCau(list) {
+    localStorage.setItem("fixflow_tickets", JSON.stringify(list));
+}
 
-    if (!ticket) return;
+/* Hien thi text */
+function fnGanText(id, value) {
+    var el = document.getElementById(id);
 
-    var modalSub = document.getElementById("matchModalSub");
-    if (modalSub) {
-        modalSub.textContent = "Yêu cầu: " + ticket.tieuDe + " (Danh mục: " + (ticket.danhMuc || "Chung") + " - Vị trí: " + (ticket.viTri || "—") + ")";
+    if (el) {
+        el.textContent = value || "";
+    }
+}
+
+/* Thong tin tai khoan */
+function capNhatTaiKhoan() {
+    var user = {};
+
+    try {
+        user = JSON.parse(
+            sessionStorage.getItem("fixflow_currentUser") || "{}"
+        );
+    } catch (error) {
+        user = {};
     }
 
-    var matchContainer = document.getElementById("techMatchList");
-    if (matchContainer) {
-        var htmlTech = "";
-        listTechnicians.forEach(function(ktv) {
-            var isPhuHop = ticket.danhMuc && ktv.chuyenMon.toLowerCase() === ticket.danhMuc.toLowerCase();
-            htmlTech += '<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 12px; border-bottom: 1px solid #f1f5f9; background: ' + (isPhuHop ? '#f0fdf4' : '#fff') + '; border-radius: 6px; margin-bottom: 6px;">' +
-                '<div>' +
-                    '<strong>' + ktv.hoTen + '</strong> ' + (isPhuHop ? '<span style="background: #dcfce7; color: #166534; font-size: 11px; padding: 2px 6px; border-radius: 4px; font-weight: 600;">⭐ Rất phù hợp chuyên môn</span>' : '') + '<br>' +
-                    '<small style="color: #64748b;">Chuyên môn: ' + ktv.chuyenMon + ' | Khu vực: ' + ktv.kuVực + ' | SĐT: ' + ktv.soDienThoai + '</small>' +
-                '</div>' +
-                '<button type="button" class="btn-action" onclick="window.chonGiaoKTV(\'' + ktv.hoTen + '\')">Giao việc</button>' +
-            '</div>';
+    var ten = user.hoTen || user.name || "Người dùng";
+    var email = user.email || "user@email.com";
+    var chuCai = ten.trim().charAt(0).toUpperCase() || "U";
+
+    fnGanText("sidebarName", ten);
+    fnGanText("sidebarEmail", email);
+    fnGanText("topName", ten);
+    fnGanText("topEmail", email);
+    fnGanText("sidebarAvatar", chuCai);
+    fnGanText("topAvatar", chuCai);
+}
+
+/* Ve lai bang dieu phoi */
+function fnKichHoatDieuPhoi() {
+    var listTickets = layDanhSachYeuCau();
+    var tbody = document.getElementById("dispatchTableBody");
+
+    if (!tbody) return;
+
+    if (listTickets.length === 0) {
+        tbody.innerHTML =
+            '<tr><td colspan="6" class="empty-cell">' +
+            'Chưa có yêu cầu nào cần điều phối.' +
+            '</td></tr>';
+        return;
+    }
+
+    var html = "";
+
+    for (var i = 0; i < listTickets.length; i++) {
+        var ticket = listTickets[i];
+
+        var ma = ticket.ma || ticket.id || "";
+        var tieuDe = ticket.tieuDe || ticket.title || "Chưa có tiêu đề";
+        var thietBi = ticket.tenThietBi || ticket.asset || "—";
+        var mucDo = ticket.mucDo || ticket.mucUuTien || ticket.priority || "Trung bình";
+        var trangThai = ticket.trangThai || ticket.status || "Chờ xử lý";
+        var viTri = ticket.viTri || ticket.location || "—";
+        var ktv = ticket.kyThuatVien || "";
+
+        var statusClass = "status-tag";
+        var statusLower = trangThai.toLowerCase();
+
+        if (statusLower.includes("chờ")) {
+            statusClass += " status-pending";
+        } else if (statusLower.includes("hoàn thành")) {
+            statusClass += " status-done";
+        } else if (
+            statusLower.includes("đang") ||
+            statusLower.includes("sửa")
+        ) {
+            statusClass += " status-working";
+        }
+
+        html +=
+            "<tr>" +
+                "<td><strong>" + escapeHTML(ma) + "</strong></td>" +
+
+                "<td>" +
+                    "<strong>" + escapeHTML(tieuDe) + "</strong><br>" +
+                    "<small>" + escapeHTML(thietBi) + "</small>" +
+                "</td>" +
+
+                "<td>" + escapeHTML(mucDo) + "</td>" +
+
+                "<td><span class='" + statusClass + "'>" +
+                    escapeHTML(trangThai) +
+                "</span></td>" +
+
+                "<td>" +
+                    (ktv
+                        ? "👨‍🔧 " + escapeHTML(ktv)
+                        : "<span style='color:#e27b17'>Chưa phân công</span>") +
+                "</td>" +
+
+                "<td>" +
+                    "<button type='button' class='btn-action' " +
+                    "data-ticket-ma='" + escapeHTML(ma) + "'>" +
+                    (ktv ? "Đổi KTV" : "Phân công KTV") +
+                    "</button>" +
+                "</td>" +
+            "</tr>";
+    }
+
+    tbody.innerHTML = html;
+
+    /* Gan su kien cho cac nut phan cong */
+    var buttons = tbody.querySelectorAll("[data-ticket-ma]");
+
+    buttons.forEach(function(button) {
+        button.addEventListener("click", function() {
+            moModalPhanCong(this.getAttribute("data-ticket-ma"));
         });
-        matchContainer.innerHTML = htmlTech;
+    });
+}
+
+/* Chuyen ky tu dac biet thanh HTML an toan */
+function escapeHTML(value) {
+    return String(value == null ? "" : value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+}
+
+/* Mo hop thoai phan cong */
+function moModalPhanCong(maYC) {
+    var list = layDanhSachYeuCau();
+
+    var ticket = list.find(function(item) {
+        return String(item.ma || item.id || "") === String(maYC);
+    });
+
+    if (!ticket) {
+        alert("Không tìm thấy yêu cầu cần phân công.");
+        return;
     }
 
-    var modal = document.getElementById("techMatchModal");
-    if (modal) modal.hidden = false;
-};
+    currentActiveTicketMa = maYC;
 
-// Chọn kỹ thuật viên từ danh sách gợi ý để gán vào yêu cầu
-window.chonGiaoKTV = function(tenKTV) {
-    if (!currentActiveTicketMa) return;
-    
-    var list = JSON.parse(localStorage.getItem("fixflow_tickets") || "[]");
+    var select = document.getElementById("selectTech");
+    var modal = document.getElementById("assignModal");
+    var info = document.getElementById("assignTicketInfo");
+
+    if (!select || !modal) {
+        alert("Không tìm thấy hộp thoại phân công trong HTML.");
+        return;
+    }
+
+    /* Tao cac lua chon KTV */
+    select.innerHTML = '<option value="">-- Chọn kỹ thuật viên --</option>';
+
+    listTechnicians.forEach(function(tenKTV) {
+        var option = document.createElement("option");
+        option.value = tenKTV;
+        option.textContent = tenKTV;
+        select.appendChild(option);
+    });
+
+    /* Hien KTV dang duoc phan cong */
+    select.value = ticket.kyThuatVien || "";
+
+    if (info) {
+        info.textContent =
+            "Mã yêu cầu: " + (ticket.ma || ticket.id || "") +
+            " — " + (ticket.tieuDe || ticket.title || "Yêu cầu bảo trì");
+    }
+
+    modal.hidden = false;
+}
+
+/* Xac nhan phan cong hoac doi KTV */
+function xacNhanPhanCong(event) {
+    event.preventDefault();
+
+    if (!currentActiveTicketMa) {
+        alert("Vui lòng chọn yêu cầu cần phân công.");
+        return;
+    }
+
+    var select = document.getElementById("selectTech");
+    var tenKTV = select ? select.value : "";
+
+    if (!tenKTV) {
+        alert("Vui lòng chọn kỹ thuật viên.");
+        return;
+    }
+
+    var list = layDanhSachYeuCau();
+    var timThay = false;
+
     for (var i = 0; i < list.length; i++) {
-        if (list[i].ma === currentActiveTicketMa) {
-            list[i].kyThuatVien = tenKTV;
-            if ((list[i].trangThai || "").toLowerCase().includes("chờ")) {
-                list[i].trangThai = "Đang sửa chữa";
+        var ticket = list[i];
+        var ma = ticket.ma || ticket.id || "";
+
+        if (String(ma) === String(currentActiveTicketMa)) {
+            /* Cap nhat ky thuat vien */
+            ticket.kyThuatVien = tenKTV;
+
+            /* Neu chua xu ly thi chuyen sang dang sua chua */
+            var status = (ticket.trangThai || ticket.status || "").toLowerCase();
+
+            if (
+                status === "" ||
+                status.includes("chờ") ||
+                status.includes("chua")
+            ) {
+                ticket.trangThai = "Đang sửa chữa";
             }
+
+            timThay = true;
             break;
         }
     }
 
-    localStorage.setItem("fixflow_tickets", JSON.stringify(list));
-    
-    var modal = document.getElementById("techMatchModal");
-    if (modal) modal.hidden = true;
+    if (!timThay) {
+        alert("Không tìm thấy yêu cầu trong dữ liệu đã lưu.");
+        return;
+    }
+
+    try {
+        luuDanhSachYeuCau(list);
+    } catch (error) {
+        alert("Không lưu được dữ liệu. Vui lòng kiểm tra trình duyệt.");
+        console.error(error);
+        return;
+    }
+
+    var modal = document.getElementById("assignModal");
+
+    if (modal) {
+        modal.hidden = true;
+    }
+
+    currentActiveTicketMa = null;
 
     fnKichHoatDieuPhoi();
-    alert("✅ Đã phân công thành công cho kỹ thuật viên: " + tenKTV);
-};
 
-// Đăng ký sự kiện khởi chạy & Đóng mở modal
+    alert("Đã phân công kỹ thuật viên thành công!");
+}
+
+/* Dong modal */
+function dongModalPhanCong() {
+    var modal = document.getElementById("assignModal");
+
+    if (modal) {
+        modal.hidden = true;
+    }
+
+    currentActiveTicketMa = null;
+}
+
+/* Khoi dong */
 document.addEventListener("DOMContentLoaded", function() {
+    capNhatTaiKhoan();
     fnKichHoatDieuPhoi();
 
-    var searchInput = document.getElementById("dispatchSearch");
-    var filterSelect = document.getElementById("dispatchFilter");
-    if (searchInput) searchInput.addEventListener("input", fnKichHoatDieuPhoi);
-    if (filterSelect) filterSelect.addEventListener("change", fnKichHoatDieuPhoi);
+    var form = document.getElementById("assignForm");
 
-    var closeTechModal = document.getElementById("closeTechModal");
-    var cancelTechModal = document.getElementById("cancelTechModal");
-    var techMatchModal = document.getElementById("techMatchModal");
+    if (form) {
+        form.addEventListener("submit", xacNhanPhanCong);
+    }
 
-    if (closeTechModal && techMatchModal) closeTechModal.onclick = function() { techMatchModal.hidden = true; };
-    if (cancelTechModal && techMatchModal) cancelTechModal.onclick = function() { techMatchModal.hidden = true; };
+    var closeButton = document.getElementById("closeAssign");
+    var cancelButton = document.getElementById("cancelAssign");
+    var modal = document.getElementById("assignModal");
+
+    if (closeButton) {
+        closeButton.addEventListener("click", dongModalPhanCong);
+    }
+
+    if (cancelButton) {
+        cancelButton.addEventListener("click", dongModalPhanCong);
+    }
+
+    if (modal) {
+        modal.addEventListener("click", function(event) {
+            if (event.target === modal) {
+                dongModalPhanCong();
+            }
+        });
+    }
+
+    /* Su kien dang xuat */
+    var logoutModal = document.getElementById("logoutModal");
+
+    var openLogout = document.getElementById("openLogout");
+    var closeLogout = document.getElementById("closeLogout");
+    var cancelLogout = document.getElementById("cancelLogout");
+    var confirmLogout = document.getElementById("confirmLogout");
+
+    if (openLogout && logoutModal) {
+        openLogout.addEventListener("click", function() {
+            logoutModal.hidden = false;
+        });
+    }
+
+    if (closeLogout && logoutModal) {
+        closeLogout.addEventListener("click", function() {
+            logoutModal.hidden = true;
+        });
+    }
+
+    if (cancelLogout && logoutModal) {
+        cancelLogout.addEventListener("click", function() {
+            logoutModal.hidden = true;
+        });
+    }
+
+    if (confirmLogout) {
+        confirmLogout.addEventListener("click", function() {
+            sessionStorage.removeItem("fixflow_currentUser");
+            window.location.href = "login.html";
+        });
+    }
 });
-
-fnKichHoatDieuPhoi();

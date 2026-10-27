@@ -4,13 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FixFlow - Theo dõi SLA</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="index.css">
+
+    <link rel="stylesheet" href="sla.css">
 </head>
 <body class="home-page" data-page="sla">
 
 <div class="app-layout">
-    <!-- MENU BÊN TRÁI -->
+
+    <!-- MENU NGANG PHIA TREN -->
     <aside class="sidebar">
+
         <a href="index.html" class="sidebar-brand">
             <div class="sidebar-logo">🔧</div>
             <div>
@@ -19,44 +23,101 @@
             </div>
         </a>
 
-        <p class="menu-heading">TỔNG QUAN</p>
-        <a href="index.html" class="nav-link">
-            <span class="nav-icon">⌂</span> Trang chủ
-        </a>
+        
+<nav class="main-navigation">
 
-        <p class="menu-heading">NGHIỆP VỤ</p>
-        <a href="create-ticket.html" class="nav-link">
-            <span class="nav-icon">＋</span> Tạo yêu cầu
-        </a>
-        <a href="request-list.html" class="nav-link">
-            <span class="nav-icon">▤</span> Yêu cầu của tôi
-        </a>
-        <a href="technician.html" class="nav-link">
-            <span class="nav-icon">⚒</span> Công việc kỹ thuật
-        </a>
-        <a href="dispatch.html" class="nav-link">
-            <span class="nav-icon">⇄</span> Điều phối công việc
-        </a>
-        <a href="sla.html" class="nav-link active">
-            <span class="nav-icon">◷</span> Theo dõi SLA
-        </a>
+    <!-- TRANG CHU -->
+    <a href="index.html" class="nav-link active">
+        <span class="nav-icon">⌂</span>
+        Trang chủ
+    </a>
 
-        <p class="menu-heading">QUẢN LÝ HỆ THỐNG</p>
-        <a href="assets.html" class="nav-link">
-            <span class="nav-icon">▣</span> Quản lý thiết bị
-        </a>
-        <a href="categories.html" class="nav-link">
-            <span class="nav-icon">▦</span> Danh mục sự cố
-        </a>
-        <a href="users.html" class="nav-link">
-            <span class="nav-icon">♙</span> Quản lý người dùng
-        </a>
-        <a href="reports.html" class="nav-link">
-            <span class="nav-icon">▥</span> Báo cáo thống kê
-        </a>
-        <a href="profile.html" class="nav-link">
-            <span class="nav-icon">◎</span> Hồ sơ cá nhân
-        </a>
+    <!-- MENU VAI TRO -->
+    <div class="role-menu">
+
+        <button type="button" class="nav-link role-button"
+                id="roleButton" aria-expanded="false">
+            <span class="nav-icon">♙</span>
+            Vai trò
+            <span class="role-arrow">▾</span>
+        </button>
+
+        <div class="role-dropdown" id="roleDropdown" hidden>
+
+            <!-- NGUOI DUNG -->
+            <div class="role-item">
+                <button type="button" class="role-option"
+                        data-role="user">
+                    <span>♙</span>
+                    Người dùng
+                    <span class="role-arrow">›</span>
+                </button>
+
+                <div class="role-submenu" hidden>
+                    <a href="create-ticket.html">Tạo yêu cầu</a>
+                    <a href="request-list.html">Yêu cầu của tôi</a>
+                </div>
+            </div>
+
+            <!-- KY THUAT VIEN -->
+            <div class="role-item">
+                <button type="button" class="role-option"
+                        data-role="technician">
+                    <span>⚒</span>
+                    Kỹ thuật viên
+                    <span class="role-arrow">›</span>
+                </button>
+
+                <div class="role-submenu" hidden>
+                    <a href="technician.html">Công việc kỹ thuật</a>
+                </div>
+            </div>
+
+            <!-- QUAN TRI VIEN -->
+            <div class="role-item">
+                <button type="button" class="role-option"
+                        data-role="admin">
+                    <span>⚙</span>
+                    Quản trị viên
+                    <span class="role-arrow">›</span>
+                </button>
+
+                <div class="role-submenu" hidden>
+                    <a href="dispatch.html">Điều phối công việc</a>
+                    <a href="sla.html">Theo dõi SLA</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CAC TRANG QUAN LY KHAC -->
+    <a href="assets.html" class="nav-link">
+        <span class="nav-icon">▣</span>
+        Quản lý thiết bị
+    </a>
+
+    <a href="categories.html" class="nav-link">
+        <span class="nav-icon">▦</span>
+        Danh mục sự cố
+    </a>
+
+    <a href="users.html" class="nav-link">
+        <span class="nav-icon">♙</span>
+        Quản lý người dùng
+    </a>
+
+    <a href="reports.html" class="nav-link">
+        <span class="nav-icon">▥</span>
+        Báo cáo thống kê
+    </a>
+
+    <a href="profile.html" class="nav-link">
+        <span class="nav-icon">◎</span>
+        Hồ sơ cá nhân
+    </a>
+
+</nav>
 
         <div class="sidebar-bottom">
             <div class="sidebar-account">
@@ -66,10 +127,12 @@
                     <small id="sidebarEmail">user@email.com</small>
                 </div>
             </div>
+
             <button type="button" class="logout-button" id="openLogout">
                 <span class="nav-icon">⇥</span> Đăng xuất
             </button>
         </div>
+
     </aside>
 
     <!-- NỘI DUNG CHÍNH -->
